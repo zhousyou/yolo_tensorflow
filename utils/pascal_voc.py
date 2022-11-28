@@ -126,11 +126,14 @@ class pascal_voc(object):
             os.makedirs(self.cache_path)
         
         filepath =  os.path.join(self.data_path, 'images')
+        
+        for index in os.listdir(filepath):
+            src = os.path.join(filepath, index)
+            dest = os.path.join(filepath, index.replace('png', 'jpg'))
+            os.rename(src, dest)
+        
         gt_labels = []
         for index in os.listdir(filepath):
-            cv2.imwrite(index.replace(".png", ".jpg"), cv2.imread(index))
-            # assert False, f"\n old: {index}, new:{index.strip('.jpg')} \n"
-            
             index = index.strip('.jpg')
            
             label, num = self.load_pascal_annotation(index)
