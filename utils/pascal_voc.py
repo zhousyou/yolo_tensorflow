@@ -10,7 +10,7 @@ import yolo.config as cfg
 class pascal_voc(object):
     def __init__(self, phase, rebuild=False):
         # self.devkil_path = os.path.join(cfg.PASCAL_PATH, 'VOCdevkit')
-        self.data_path = os.path.join(cfg.PASCAL_PATH, 'mask-wear')
+        self.data_path = os.path.join(cfg.PASCAL_PATH, 'mask_wear')
         self.cache_path = cfg.CACHE_PATH
         self.batch_size = cfg.BATCH_SIZE
         self.image_size = cfg.IMAGE_SIZE
@@ -29,7 +29,7 @@ class pascal_voc(object):
         images = np.zeros(
             (self.batch_size, self.image_size, self.image_size, 3))
         labels = np.zeros(
-            (self.batch_size, self.cell_size, self.cell_size, 25))
+            (self.batch_size, self.cell_size, self.cell_size, 8))
         count = 0
         while count < self.batch_size:
             imname = self.gt_labels[self.cursor]['imname']
@@ -46,6 +46,7 @@ class pascal_voc(object):
 
     def image_read(self, imname, flipped=False):
         image = cv2.imread(imname)
+        
         image = cv2.resize(image, (self.image_size, self.image_size))
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
         image = (image / 255.0) * 2.0 - 1.0
@@ -119,19 +120,22 @@ class pascal_voc(object):
             with open(cache_file, 'rb') as f:
                 gt_labels = pickle.load(f)
             return gt_labels
+        print('Processing gtlabels from: ' + self.data_path)
         
+        if not os.path.exists(self.cache_path):
+            os.makedirs(self.cache_path)
         
         filepath =  os.path.join(self.data_path, 'images')
         gt_labels = []
         for index in os.listdir(filepath):
-            assert False, f"\n old: {index}, new:{index.strip('.png')} \n"
+            # assert False, f"\n old: {index}, new:{index.strip('.png')} \n"
             
             index = index.strip('.png')
            
             label, num = self.load_pascal_annotation(index)
             if num == 0:
                 continue
-            imname = os.path.join(self.data_path, 'PNGImages', index )
+            imname = os.path.join(self.data_path, 'images', index )
             gt_labels.append({'imname': imname,
                               'label': label,
                               'flipped': False})
@@ -145,14 +149,14 @@ class pascal_voc(object):
         format.
         """
 
-        imname = os.path.join(self.data_path, 'JPEGImages', index + '.jpg')
+        imname = os.path.join(self.data_path, 'images', index + '.png')
         im = cv2.imread(imname)
         h_ratio = 1.0 * self.image_size / im.shape[0]
         w_ratio = 1.0 * self.image_size / im.shape[1]
         # im = cv2.resize(im, [self.image_size, self.image_size])
 
-        label = np.zeros((self.cell_size, self.cell_size, 25))
-        filename = os.path.join(self.data_path, 'Annotations', index + '.xml')
+        label = np.zeros((self.cell_size, self.cell_size, 8))
+        filename = os.path.join(self.data_path, 'annotations', index + '.xml')
         tree = ET.parse(filename)
         objs = tree.findall('object')
 

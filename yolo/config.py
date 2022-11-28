@@ -17,7 +17,7 @@ WEIGHTS_DIR = os.path.join(PASCAL_PATH, 'weights')
 WEIGHTS_FILE = None
 # WEIGHTS_FILE = os.path.join(DATA_PATH, 'weights', 'YOLO_small.ckpt')
 
-CLASSES = ['mask','non-mask']
+CLASSES = ['with_mask','without_mask','mask_weared_incorrected']
 
 FLIPPED = True
 
