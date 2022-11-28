@@ -6,8 +6,8 @@ import yolo.config as cfg
 from yolo.yolo_net import YOLONet
 from utils.timer import Timer
 from utils.pascal_voc import pascal_voc
-# import tf_slim as slim
-slim = tf.contrib.slim
+import tf_slim as slim
+# slim = tf.contrib.slim
 
 
 class Solver(object):

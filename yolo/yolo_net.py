@@ -1,8 +1,8 @@
 import numpy as np
 import tensorflow.compat.v1 as tf
 import yolo.config as cfg
-# import tf_slim as slim
-slim = tf.contrib.slim
+import tf_slim as slim
+# slim = tf.contrib.slim
 
 
 class YOLONet(object):
@@ -33,7 +33,7 @@ class YOLONet(object):
             [np.arange(self.cell_size)] * self.cell_size * self.boxes_per_cell),
             (self.boxes_per_cell, self.cell_size, self.cell_size)), (1, 2, 0))
 
-        self.images = tf.placeholder(
+        self.images = tf.compat.v1.placeholder(
             tf.float32, [None, self.image_size, self.image_size, 3],
             name='images')
         self.logits = self.build_network(
@@ -41,7 +41,7 @@ class YOLONet(object):
             is_training=is_training)
 
         if is_training:
-            self.labels = tf.placeholder(
+            self.labels = tf.compat.v1.placeholder(
                 tf.float32,
                 [None, self.cell_size, self.cell_size, 5 + self.num_class])
             self.loss_layer(self.logits, self.labels)

@@ -54,7 +54,7 @@ class pascal_voc(object):
         return image
 
     def prepare(self):
-        gt_labels = self.load_labels()
+        gt_labels = self.new_load_labels()
         if self.flipped:
             print('Appending horizontally-flipped training examples ...')
             gt_labels_cp = copy.deepcopy(gt_labels)
@@ -102,7 +102,7 @@ class pascal_voc(object):
             label, num = self.load_pascal_annotation(index)
             if num == 0:
                 continue
-            imname = os.path.join(self.data_path, 'JPEGImages', index + '.jpg')
+            imname = os.path.join(self.data_path, 'PNGImages', index )
             gt_labels.append({'imname': imname,
                               'label': label,
                               'flipped': False})
@@ -110,7 +110,35 @@ class pascal_voc(object):
         with open(cache_file, 'wb') as f:
             pickle.dump(gt_labels, f)
         return gt_labels
+    def new_load_labels(self):
+        cache_file = os.path.join(
+            self.cache_path, 'pascal_' + self.phase + '_gt_labels.pkl')
 
+        if os.path.isfile(cache_file) and not self.rebuild:
+            print('Loading gt_labels from: ' + cache_file)
+            with open(cache_file, 'rb') as f:
+                gt_labels = pickle.load(f)
+            return gt_labels
+        
+        
+        filepath =  os.path.join(self.data_path, 'images')
+        gt_labels = []
+        for index in os.listdir(filepath):
+            print(index)
+            index = index.strip('.png')
+            print(index)
+            assert False
+            label, num = self.load_pascal_annotation(index)
+            if num == 0:
+                continue
+            imname = os.path.join(self.data_path, 'PNGImages', index )
+            gt_labels.append({'imname': imname,
+                              'label': label,
+                              'flipped': False})
+        print('Saving gt_labels to: ' + cache_file)
+        with open(cache_file, 'wb') as f:
+            pickle.dump(gt_labels, f)
+        return gt_labels
     def load_pascal_annotation(self, index):
         """
         Load image and bounding boxes info from XML file in the PASCAL VOC
