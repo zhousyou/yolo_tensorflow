@@ -61,6 +61,16 @@ class Solver(object):
         load_timer = Timer()
 
         for step in range(1, self.max_iter + 1):
+            if step == 200:
+                self.initial_learning_rate = 1e-2
+                self.learning_rate = tf.train.exponential_decay(
+                            self.initial_learning_rate, self.global_step, self.decay_steps,
+                            self.decay_rate, self.staircase, name='learning_rate')
+                self.optimizer = tf.train.GradientDescentOptimizer(
+                    learning_rate=self.learning_rate)
+                self.train_op = slim.learning.create_train_op(
+                    self.net.total_loss, self.optimizer, global_step=self.global_step)
+            
 
             load_timer.tic()
             images, labels = self.data.get()
