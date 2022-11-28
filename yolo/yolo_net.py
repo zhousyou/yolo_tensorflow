@@ -1,7 +1,7 @@
 import numpy as np
-import tensorflow as tf
+import tensorflow.compact.v1 as tf
 import yolo.config as cfg
-
+# import tf_slim as slim
 slim = tf.contrib.slim
 
 
