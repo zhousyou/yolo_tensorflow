@@ -9,8 +9,8 @@ import yolo.config as cfg
 
 class pascal_voc(object):
     def __init__(self, phase, rebuild=False):
-        self.devkil_path = os.path.join(cfg.PASCAL_PATH, 'VOCdevkit')
-        self.data_path = os.path.join(self.devkil_path, 'VOC2007')
+        # self.devkil_path = os.path.join(cfg.PASCAL_PATH, 'VOCdevkit')
+        self.data_path = os.path.join(cfg.PASCAL_PATH, 'mask-wear')
         self.cache_path = cfg.CACHE_PATH
         self.batch_size = cfg.BATCH_SIZE
         self.image_size = cfg.IMAGE_SIZE
