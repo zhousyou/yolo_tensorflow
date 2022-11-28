@@ -151,7 +151,7 @@ def main():
     pascal = pascal_voc('train')
 
     solver = Solver(yolo, pascal)
-
+    print(yolo.logits)
     print('Start training ...')
     solver.train()
     print('Done training.')
