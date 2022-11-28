@@ -135,11 +135,11 @@ class pascal_voc(object):
             label, num = self.load_pascal_annotation(index)
             if num == 0:
                 continue
-            imname = os.path.join(self.data_path, 'images', index )
+            imname = os.path.join(self.data_path, 'images', index+'.png' )
             gt_labels.append({'imname': imname,
                               'label': label,
                               'flipped': False})
-        print('Saving gt_labels to: ' + cache_file)
+        print('Saving gt_labels to: ' + cache_file) 
         with open(cache_file, 'wb') as f:
             pickle.dump(gt_labels, f)
         return gt_labels
