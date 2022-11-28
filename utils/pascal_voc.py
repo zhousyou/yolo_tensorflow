@@ -124,10 +124,10 @@ class pascal_voc(object):
         filepath =  os.path.join(self.data_path, 'images')
         gt_labels = []
         for index in os.listdir(filepath):
-            print(index)
+            assert False, f"\n old: {index}, new:{index.strip('.png')} \n"
+            
             index = index.strip('.png')
-            print(index)
-            assert False
+           
             label, num = self.load_pascal_annotation(index)
             if num == 0:
                 continue

@@ -9,7 +9,7 @@ from utils.pascal_voc import pascal_voc
 import tf_slim as slim
 # slim = tf.contrib.slim
 
-
+tf.compat.v1.disable_eager_execution()
 class Solver(object):
 
     def __init__(self, net, data):
