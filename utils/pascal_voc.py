@@ -103,7 +103,7 @@ class pascal_voc(object):
             label, num = self.load_pascal_annotation(index)
             if num == 0:
                 continue
-            imname = os.path.join(self.data_path, 'PNGImages', index )
+            imname = os.path.join(self.data_path, 'jpgImages', index )
             gt_labels.append({'imname': imname,
                               'label': label,
                               'flipped': False})
@@ -128,14 +128,15 @@ class pascal_voc(object):
         filepath =  os.path.join(self.data_path, 'images')
         gt_labels = []
         for index in os.listdir(filepath):
-            # assert False, f"\n old: {index}, new:{index.strip('.png')} \n"
+            cv2.imwrite(index.replace(".png", ".jpg"), cv2.imread(index))
+            # assert False, f"\n old: {index}, new:{index.strip('.jpg')} \n"
             
-            index = index.strip('.png')
+            index = index.strip('.jpg')
            
             label, num = self.load_pascal_annotation(index)
             if num == 0:
                 continue
-            imname = os.path.join(self.data_path, 'images', index+'.png' )
+            imname = os.path.join(self.data_path, 'images', index+'.jpg' )
             gt_labels.append({'imname': imname,
                               'label': label,
                               'flipped': False})
@@ -149,7 +150,7 @@ class pascal_voc(object):
         format.
         """
 
-        imname = os.path.join(self.data_path, 'images', index + '.png')
+        imname = os.path.join(self.data_path, 'images', index + '.jpg')
         im = cv2.imread(imname)
         h_ratio = 1.0 * self.image_size / im.shape[0]
         w_ratio = 1.0 * self.image_size / im.shape[1]
