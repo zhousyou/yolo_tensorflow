@@ -130,7 +130,10 @@ class pascal_voc(object):
         for index in os.listdir(filepath):
             src = os.path.join(filepath, index)
             dest = os.path.join(filepath, index.replace('png', 'jpg'))
-            os.rename(src, dest)
+            src_img = cv2.imread(src)
+            assert src_img is not None
+            cv2.imwrite(dest, src_img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+            os.remove(src)
         
         gt_labels = []
         for index in os.listdir(filepath):
